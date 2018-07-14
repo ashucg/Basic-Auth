@@ -36,11 +36,11 @@ function json_basic_auth_handler($user) {
      * recursion and a stack overflow unless the current function is removed from the determine_current_user
      * filter during authentication.
      */
-    remove_filter('determine_current_user', 'json_basic_auth_handler', 20);
+    remove_filter('determine_current_user', 'json_basic_auth_handler', 10);
 
     $user = wp_authenticate($username, $password);
 
-    add_filter('determine_current_user', 'json_basic_auth_handler', 20);
+    add_filter('determine_current_user', 'json_basic_auth_handler', 10);
 
     if (is_wp_error($user)) {
         $wp_json_basic_auth_error = $user;
@@ -52,7 +52,7 @@ function json_basic_auth_handler($user) {
     return $user->ID;
 }
 
-add_filter('determine_current_user', 'json_basic_auth_handler', 20);
+add_filter('determine_current_user', 'json_basic_auth_handler', 10);
 
 function json_basic_auth_error($error) {
     // Passthrough other errors
